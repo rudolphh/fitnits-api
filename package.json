@@ -2,22 +2,25 @@
   "name": "api",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rudolphh/fitnits-api.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rudolphh/fitnits-api/issues"
+  },
+  "homepage": "https://github.com/rudolphh/fitnits-api#readme",
   "dependencies": {
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
-    "mongoose": "^5.12.11"
-  },
-  "devDependencies": {
-    "@types/express": "^4.17.12",
-    "@types/node": "^15.6.1",
-    "ts-node": "^10.0.0",
-    "typescript": "^4.3.2"
+    "mongoose": "^5.12.12"
   }
 }
