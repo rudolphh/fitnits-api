@@ -7,51 +7,70 @@ const {
   getAuthenticatedUser,
 } = require("../middlewares/auth");
 
+const { User, createUser } = require("../models/user");
+const { UserSettings, createUserSettings } = require('../models/userSettings');
+
+
 router.use(cors());
 router.use(express.urlencoded({ extended: true }));
 router.use(express.json());
 
-const User = require("../models/user");
 
-router.post("/register", (req, res) => {
+router.post("/register", async (req, res) => {
 
-  let newUser = new User({ ...req.body });
+  let { username, email, password, passwordConfirm } = req.body;
+  let { gender } = req.body;
 
-  newUser.save( ( error, user ) => {
-    if (error) {
-      res.json({
-        message: 'error',
-        description: 'an error occurred while saving the user in database.'
-      });
-    } else {
+  try {
+    
+      const userSettings = await createUserSettings(gender);
+      const settingsId = userSettings._id.toString();
+      const user = await createUser(username, email, password, passwordConfirm, settingsId);
+
       res.json({
         message: 'success',
         description: 'user details successfully saved.',
         user
       });
-    }
-  });
+  } catch (error) {
+      console.log(error)
+    res.json({
+        message: 'error',
+        description: 'an error occurred while saving the user in database.'
+      });
+  }
 
 });
 
-router.route("/users").get((req, res) => {
-  Users.find({}, (err, users) => {
-    if (err) res.status(500).send(err);
-    res.status(200).send(users);
-  });
+router.route("/users").get( async (req, res) => {
+  
+  try {
+      const data = await User.find()
+                        .populate('measurement')
+                        .populate('settings', 'gender -_id')
+                        .exec();
+
+      data.forEach(function(user) {
+          user.password = undefined;
+      });
+      res.status(200).json({ success: true, data });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+
 });
 
 router
   .route("/measurements/{userId}")
   .get((req, res, next) => {
-    const ip = requestIp.getClientIp(req);
-    console.log(ip);
 
-    getRepositories((repos) => {
-      res.send(repos);
-    });
+
   })
-  .post(authenticateJWT, getAuthenticatedUser, (req, res) => {});
+  .post(authenticateJWT, getAuthenticatedUser, (req, res) => {
+
+  });
+
+
 
 // contact form
 router.post("/contact", (req, res) => {
