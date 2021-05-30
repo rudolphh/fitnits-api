@@ -9,6 +9,7 @@ const {
 
 const { User, createUser } = require("../models/user");
 const { UserSettings, createUserSettings } = require('../models/userSettings');
+const { Measurement, createMeasurement } = require('../models/measurement');
 
 
 router.use(cors());
@@ -46,9 +47,8 @@ router.route("/users").get( async (req, res) => {
   
   try {
       const data = await User.find()
-                        .populate('measurement')
-                        .populate('settings', 'gender -_id')
-                        .exec();
+                        .populate({ path: 'measurements', select: 'weight neck waist hips unit' })
+                        .populate('settings', 'gender -_id');
 
       data.forEach(function(user) {
           user.password = undefined;
@@ -61,13 +61,52 @@ router.route("/users").get( async (req, res) => {
 });
 
 router
-  .route("/measurements/{userId}")
-  .get((req, res, next) => {
+  .route("/measurements/:userId")
+  .get( async (req, res, next) => {
+    let { userId } = req.params;
 
+    try {
+        const exists = await User.exists({ _id: userId });
+        if(exists) {
+            res.status(200).send(exists); 
+        }
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            message: 'error',
+            description: 'an error occurred while checking if the user exists in database.'
+        });
+    }
 
   })
-  .post(authenticateJWT, getAuthenticatedUser, (req, res) => {
+  //.post(authenticateJWT, getAuthenticatedUser, (req, res) => {
+  .post( async (req, res) => {
+    let { userId } = req.params;
+    let { weight, neck, waist, hips, unit } = req.body;
 
+    try {
+        const exists = await User.exists({ _id: userId });
+
+        if(exists) {
+            const measurement = await createMeasurement(weight, neck, waist, hips, unit, userId);
+            res.status(200).json({
+                message: 'success',
+                description: 'user measurement successfully saved.',
+                measurement
+              });
+        } else {
+            res.status(200).json({
+                message: 'not found',
+                description: 'user does not exist.',
+              });
+        }
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            message: 'error',
+            description: 'an error occurred while checking if the user exists in database.'
+        });
+    }
   });
 
 

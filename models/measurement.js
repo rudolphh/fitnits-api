@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const validator = require('validator');
 
-let measurement = new Schema({
+let measurementSchema = new Schema({
     weight: { type: Number, required: true, min: [0, 'Must be positive']},
     neck: { type: Number, required: true, min: [0, 'Must be positive']},
     waist: { type: Number, required: true, min: [0, 'Must be positive']},
@@ -21,4 +21,14 @@ let measurement = new Schema({
 
 }, { timestamps: true });
 
-module.exports = mongoose.model('measurement', measurement, 'measurements');
+const Measurement = mongoose.model('measurement', measurementSchema, 'measurements');
+
+const createMeasurement = function(weight, neck, waist, hips=undefined, unit='imperial', user) {
+    const measurement = new Measurement({ weight, neck, waist, hips, unit, user});
+    return measurement.save();
+}
+
+module.exports = {
+    Measurement,
+    createMeasurement
+}
