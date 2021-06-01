@@ -7,7 +7,7 @@ const User = require('../models/user');
 
 const accessTokenSecret = process.env.SECRET;
 
-exports.authenticateJWT = (req, res, next) => {
+exports.verifyToken = (req, res, next) => {
     const token = req.headers['x-access-token'] || localStorage.getItem('authToken');
 
     if (token) {
@@ -18,7 +18,7 @@ exports.authenticateJWT = (req, res, next) => {
                 req.user = null;
                 next('route');
             }
-            req.decodedToken = decodedToken; 
+            req.userId = decodedToken.id; 
             next();
         });
     } else {
@@ -29,7 +29,7 @@ exports.authenticateJWT = (req, res, next) => {
 
 exports.getAuthenticatedUser = (req, res, next) => {
 
-    User.findOne({ _id: req.decodedToken.id }, (err, user) => {
+    User.findOne({ _id: req.userId }, (err, user) => {
         if(err) return res.status(500).send('There was a problem searching for the user');
         if(!user) req.user = null;
         req.user = user;

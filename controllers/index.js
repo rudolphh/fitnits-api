@@ -2,10 +2,7 @@ const express = require("express");
 const router = express.Router();
 const cors = require("cors");
 
-const {
-  authenticateJWT,
-  getAuthenticatedUser,
-} = require("../middlewares/auth");
+const { verifyToken, getAuthenticatedUser } = require("../middlewares/auth");
 
 const { User, createUser } = require("../models/user");
 const { UserSettings, createUserSettings } = require('../models/userSettings');
@@ -23,7 +20,6 @@ router.post("/register", async (req, res) => {
   let { gender } = req.body;
 
   try {
-    
       const userSettings = await createUserSettings(gender);
       const settingsId = userSettings._id.toString();
       const user = await createUser(username, email, password, passwordConfirm, settingsId);
@@ -33,8 +29,8 @@ router.post("/register", async (req, res) => {
         description: 'user details successfully saved.',
         user
       });
-  } catch (error) {
-
+  } 
+  catch (error) {
     console.log(error);
     res.json({
         message: 'error',
@@ -44,42 +40,48 @@ router.post("/register", async (req, res) => {
 
 });
 
-router.route("/users").get( async (req, res) => {
+router.get("/users", async (req, res) => {
   
   try {
-      const data = await User.find()
-                        //.populate({ path: 'measurements', select: 'weight neck waist hips unit' })
-                        .populate('settings', 'gender -_id');
+      const data = await User.find({}, { password: 0 })
+                    //.populate({ path: 'measurements', select: 'weight neck waist hips unit' })
+                    .populate('settings', 'gender -_id');
 
-      data.forEach(function(user) {
-          user.password = undefined;
-      });
       res.status(200).json({ success: true, data });
-  } catch (error) {
+  } 
+  catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
-
 });
 
-router
-  .route("/measurements/:userId")
+
+router.route("/measurements/:userId")
+
   .get( async (req, res, next) => {
     let { userId } = req.params;
 
     try {
         const exists = await User.exists({ _id: userId });
         if(exists) {
-            res.status(200).send(exists); 
+            const measurements = await Measurement.find({ user: userId });
+            res.status(200).send(measurements);
+        } else {
+            res.status(200).json({
+                message: 'not found',
+                description: 'user does not exist.',
+              });
         }
-    } catch (error) {
+    } 
+    catch (error) {
         console.log(error);
         res.status(500).json({
             message: 'error',
             description: 'an error occurred while checking if the user exists in database.'
-        });
+          });
     }
 
   })
+
   //.post(authenticateJWT, getAuthenticatedUser, (req, res) => {
   .post( async (req, res) => {
     let { userId } = req.params;
@@ -101,14 +103,22 @@ router
                 description: 'user does not exist.',
               });
         }
-    } catch (error) {
+    } 
+    catch (error) {
         console.log(error);
         res.status(500).json({
             message: 'error',
             description: 'an error occurred while checking if the user exists in database.'
         });
     }
-  });
+  });// end post
+
+
+
+
+
+
+
 
 
 
