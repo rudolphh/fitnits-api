@@ -1,3 +1,4 @@
+const dotenv = require('dotenv').config();
 const express = require("express");
 const router = express.Router();
 const cors = require("cors");
@@ -7,6 +8,10 @@ const { verifyToken, getAuthenticatedUser } = require("../middlewares/auth");
 const { User, createUser } = require("../models/user");
 const { UserSettings, createUserSettings } = require('../models/userSettings');
 const { Measurement, createMeasurement } = require('../models/measurement');
+
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const accessTokenSecret = process.env.SECRET;
 
 
 router.use(cors());
@@ -25,20 +30,52 @@ router.post("/register", async (req, res) => {
       const user = await createUser(username, email, password, passwordConfirm, settingsId);
 
       res.json({
-        message: 'success',
-        description: 'user details successfully saved.',
+        success: true,
+        message: 'user details successfully saved.',
         user
       });
   } 
   catch (error) {
     console.log(error);
     res.json({
-        message: 'error',
-        description: 'an error occurred while saving the user in database.'
+        success: false,
+        message: 'an error occurred while saving the user in database.'
       });
   }
 
 });
+
+router.post("/login", async(req, res) => {
+    let { username, email, password } = req.body;
+
+    try {
+        const user = await User.findOne({ $or: [{ username }, { email }]})
+        if(user) {
+            const passwordIsValid = bcrypt.compareSync(password, user.password);
+            if(passwordIsValid) {
+                var token = jwt.sign({ id: user._id }, accessTokenSecret, {
+                    expiresIn: 86400 // expires in 24 hours
+                });
+                res.status(200).json({ 
+                    success: true, 
+                    message: 'login successful', 
+                    data: user,
+                    token
+                  });
+            }
+            else {
+                res.status(200).json({ success: true, message: 'invalid username, email, or password'});
+            }
+        } else {
+            res.status(200).json({ success: true, message: 'invalid username, email, or password'});
+        }
+    } 
+    catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+})
+
+
 
 router.get("/users", async (req, res) => {
   
@@ -47,7 +84,7 @@ router.get("/users", async (req, res) => {
                     //.populate({ path: 'measurements', select: 'weight neck waist hips unit' })
                     .populate('settings', 'gender -_id');
 
-      res.status(200).json({ success: true, data });
+      res.status(200).json({ success: true, message: 'all users', data });
   } 
   catch (error) {
     res.status(500).json({ success: false, message: error.message });
@@ -64,19 +101,23 @@ router.route("/measurements/:userId")
         const exists = await User.exists({ _id: userId });
         if(exists) {
             const measurements = await Measurement.find({ user: userId });
-            res.status(200).send(measurements);
+            res.status(200).json({
+                success: true,
+                message: 'measurements',
+                data: measurements
+              });
         } else {
             res.status(200).json({
-                message: 'not found',
-                description: 'user does not exist.',
+                success: true,
+                message: 'user does not exist.',
               });
         }
     } 
     catch (error) {
         console.log(error);
         res.status(500).json({
-            message: 'error',
-            description: 'an error occurred while checking if the user exists in database.'
+            success: false,
+            message: 'an error occurred while checking if the user exists in database.'
           });
     }
 
@@ -93,22 +134,22 @@ router.route("/measurements/:userId")
         if(exists) {
             const measurement = await createMeasurement(weight, neck, waist, hips, unit, userId);
             res.status(200).json({
-                message: 'success',
-                description: 'user measurement successfully saved.',
-                measurement
+                success: true,
+                message: 'user measurement successfully saved.',
+                data: measurement
               });
         } else {
             res.status(200).json({
-                message: 'not found',
-                description: 'user does not exist.',
+                success: true,
+                message: 'user does not exist.',
               });
         }
     } 
     catch (error) {
         console.log(error);
         res.status(500).json({
-            message: 'error',
-            description: 'an error occurred while checking if the user exists in database.'
+            success: false,
+            message: 'an error occurred while checking if the user exists in database.'
         });
     }
   });// end post

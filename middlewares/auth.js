@@ -8,7 +8,7 @@ const User = require('../models/user');
 const accessTokenSecret = process.env.SECRET;
 
 exports.verifyToken = (req, res, next) => {
-    const token = req.headers['x-access-token'] || localStorage.getItem('authToken');
+    const token = req.headers['x-access-token'];// || localStorage.getItem('authToken');
 
     if (token) {
         jwt.verify(token, accessTokenSecret, (err, decodedToken) => {
