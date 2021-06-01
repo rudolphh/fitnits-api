@@ -50,25 +50,24 @@ router.post("/login", async(req, res) => {
 
     try {
         const user = await User.findOne({ $or: [{ username }, { email }]})
-        if(user) {
-            const passwordIsValid = bcrypt.compareSync(password, user.password);
-            if(passwordIsValid) {
-                var token = jwt.sign({ id: user._id }, accessTokenSecret, {
-                    expiresIn: 86400 // expires in 24 hours
-                });
-                res.status(200).json({ 
-                    success: true, 
-                    message: 'login successful', 
-                    data: user,
-                    token
-                  });
-            }
-            else {
-                res.status(200).json({ success: true, message: 'invalid username, email, or password'});
-            }
-        } else {
-            res.status(200).json({ success: true, message: 'invalid username, email, or password'});
+        if(!user) {
+            return res.status(200).json({ success: true, message: 'invalid username, email, or password'});
         }
+
+        const passwordIsValid = bcrypt.compareSync(password, user.password);
+        if(!passwordIsValid) {
+            return res.status(200).json({ success: true, message: 'invalid username, email, or password'});
+        }
+
+        var token = jwt.sign({ id: user._id }, accessTokenSecret, {
+            expiresIn: 86400 // expires in 24 hours
+        });
+        res.status(200).json({ 
+            success: true, 
+            message: 'login successful', 
+            data: user,
+            token
+            }); 
     } 
     catch (error) {
         res.status(500).json({ success: false, message: error.message });
@@ -94,7 +93,7 @@ router.get("/users", async (req, res) => {
 
 router.route("/measurements/:userId")
 
-  .get( async (req, res, next) => {
+  .get( verifyToken, getAuthenticatedUser, async (req, res, next) => {
     let { userId } = req.params;
 
     try {
