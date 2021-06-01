@@ -93,7 +93,7 @@ router.get("/users", async (req, res) => {
 
 router.route("/measurements/:userId")
 
-  .get( verifyToken, getAuthenticatedUser, async (req, res, next) => {
+  .get( verifyToken, async (req, res, next) => {
     let { userId } = req.params;
 
     try {
@@ -122,27 +122,22 @@ router.route("/measurements/:userId")
 
   })
 
-  //.post(authenticateJWT, getAuthenticatedUser, (req, res) => {
-  .post( async (req, res) => {
+  .post( verifyToken, async (req, res) => {
     let { userId } = req.params;
     let { weight, neck, waist, hips, unit } = req.body;
 
     try {
         const exists = await User.exists({ _id: userId });
-
-        if(exists) {
-            const measurement = await createMeasurement(weight, neck, waist, hips, unit, userId);
-            res.status(200).json({
-                success: true,
-                message: 'user measurement successfully saved.',
-                data: measurement
-              });
-        } else {
-            res.status(200).json({
-                success: true,
-                message: 'user does not exist.',
-              });
+        if(!exists) {
+            return res.status(200).json({ success: true, message: 'user does not exist.' });
         }
+
+        const measurement = await createMeasurement(weight, neck, waist, hips, unit, userId);
+        res.status(200).json({
+            success: true,
+            message: 'user measurement successfully saved.',
+            data: measurement
+        });
     } 
     catch (error) {
         console.log(error);

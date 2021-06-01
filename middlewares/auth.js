@@ -6,23 +6,23 @@ const { User } = require('../models/user');
 const accessTokenSecret = process.env.SECRET;
 
 exports.verifyToken = async (req, res, next) => {
-    const token = req.headers['authorization'].split(' ')[1];// || localStorage.getItem('authToken');
-    if (token) {
-        try {
-            const decodedToken = await jwt.verify(token, accessTokenSecret);
-            if(!decodedToken) {
-                req.user = null;
-                next('route');
-            }
-            req.userId = decodedToken.id; 
-            next();
-        } 
-        catch (error) {
-            res.status(403).json({ success: false, message: 'something is wrong' });
+    const authHeader = req.headers['authorization'];
+    const token = authHeader ? authHeader.split(' ')[1] : null;// || localStorage.getItem('authToken');
+    if(!token){
+        return res.status(403).json({ success: false, message: 'no authorization header'});
+    }
+    
+    try {
+        const decodedToken = await jwt.verify(token, accessTokenSecret);
+        if(!decodedToken) {
+            req.user = null;
+            next('route');
         }
-    } else {
-        req.user = null;
-        next('route');
+        req.userId = decodedToken.id; 
+        next();
+    } 
+    catch (error) {
+        res.status(403).json({ success: false, message: 'invalid token' });
     }
 };
 
