@@ -34,7 +34,8 @@ router.post("/register", async (req, res) => {
         user
       });
   } catch (error) {
-      console.log(error)
+
+    console.log(error);
     res.json({
         message: 'error',
         description: 'an error occurred while saving the user in database.'
@@ -47,7 +48,7 @@ router.route("/users").get( async (req, res) => {
   
   try {
       const data = await User.find()
-                        .populate({ path: 'measurements', select: 'weight neck waist hips unit' })
+                        //.populate({ path: 'measurements', select: 'weight neck waist hips unit' })
                         .populate('settings', 'gender -_id');
 
       data.forEach(function(user) {
