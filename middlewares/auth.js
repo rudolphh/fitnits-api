@@ -7,17 +7,14 @@ const accessTokenSecret = process.env.SECRET;
 
 exports.verifyToken = async (req, res, next) => {
     const authHeader = req.headers['authorization'];
-    const token = authHeader ? authHeader.split(' ')[1] : null;// || localStorage.getItem('authToken');
+    const token = authHeader && authHeader.split(' ')[1];// || localStorage.getItem('authToken');
     if(!token){
         return res.status(403).json({ success: false, message: 'no authorization header'});
     }
     
     try {
+        // if the signature is invalid it throws an error so no need to check decodedToken
         const decodedToken = await jwt.verify(token, accessTokenSecret);
-        if(!decodedToken) {
-            req.user = null;
-            next('route');
-        }
         req.userId = decodedToken.id; 
         next();
     } 

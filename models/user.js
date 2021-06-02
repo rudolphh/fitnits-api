@@ -26,6 +26,7 @@ let user = new Schema(
       type: String,
       required: [true, "Enter a password."],
       minLength: [4, "Password should be at least four characters"],
+      select: false
     },
     passwordConfirm: {
       type: String,
