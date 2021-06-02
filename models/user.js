@@ -85,8 +85,8 @@ user.pre('save', async function(next) {
 });
 
 const User = mongoose.model("user", user, "users");
-const createUser = function(username, email, password, passwordConfirm, settings) {
-    const newUser = new User({ username, email, password, passwordConfirm, settings });
+const createUser = function(username, email, password, passwordConfirm, role, settings) {
+    const newUser = new User({ username, email, password, passwordConfirm, role, settings });
     return newUser.save();
 };
 

@@ -1,5 +1,6 @@
 const router = require('./initRouter');
 
+const { verifyAdmin } = require('../middlewares/auth');
 const { User, createUser } = require("../models/user");
 const { createUserSettings } = require('../models/userSettings');
 
@@ -8,29 +9,24 @@ const jwt = require('jsonwebtoken');
 const accessTokenSecret = process.env.SECRET;
 
 
-router.post("/register", async (req, res) => {
+router.post("/register", verifyAdmin, async (req, res, next) => {
 
-    let { username, email, password, passwordConfirm } = req.body;
+    let { username, email, password, passwordConfirm, role } = req.body;
     let { gender } = req.body;
   
     try {
+        if(role === "admin" && !req.isAdmin)
+            return res.status(403).send({ success: false, message: 'Only an admin can register a new admin user' });
+
         const userSettings = await createUserSettings(gender);
         const settingsId = userSettings._id.toString();
-        const user = await createUser(username, email, password, passwordConfirm, settingsId);
+        const user = await createUser(username, email, password, passwordConfirm, role, settingsId);
         user.password = undefined;
 
-        res.json({
-          success: true,
-          message: 'user details successfully saved',
-          user
-        });
+        res.json({ success: true, message: 'user details successfully saved', user });
     } 
     catch (error) {
-      console.log(error);
-      res.json({
-          success: false,
-          message: 'an error occurred while saving the user in database'
-        });
+        next(error);
     }
   
   });
@@ -57,7 +53,7 @@ router.post("/register", async (req, res) => {
           res.status(200).json({ success: true, message: 'login successful', data: user, token }); 
       } 
       catch (error) {
-          res.status(500).json({ success: false, message: error.message });
+          next(error);
       }
   });
 

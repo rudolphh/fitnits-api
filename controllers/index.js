@@ -5,6 +5,7 @@ const { User } = require("../models/user");
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
+router.use(require('./errorController'));
 router.use('/', require('./registration'));
 router.use('/', require('./measurements'));
 
