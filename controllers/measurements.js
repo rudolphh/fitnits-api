@@ -6,9 +6,11 @@ const { User } = require("../models/user");
 const { Measurement, createMeasurement } = require('../models/measurement');
 
 
+// get all user measurements and create single user measurement
 router.route("/user/:userId/measurements")
-// GET
-.get( verifyToken, async (req, res, next) => {
+.all(verifyToken)
+
+.get( async (req, res, next) => {
   let { userId } = req.params;
   if( userId !== req.userId ) {
       return res.status(401).json({ success: false, message: 'invalid authentication for requested resource' });
@@ -27,8 +29,7 @@ router.route("/user/:userId/measurements")
   }
 
 })
-// POST
-.post( verifyToken, async (req, res) => {
+.post( async (req, res) => {
   let { userId } = req.params;
   let { weight, neck, waist, hips, unit } = req.body;
 
@@ -51,50 +52,56 @@ router.route("/user/:userId/measurements")
 });
 
 
+// read, update, delete single user measurement
 router.route('/measurements/:measurementId')
+.all(verifyToken)
 
-.get( verifyToken, async (req, res) => {
+.get( async (req, res) => {
     let { measurementId } = req.params;
 
     try {
-        const measurement = await Measurement.findOne({ _id : measurementId });
+        const measurement = await Measurement.findOne({ _id : measurementId, user: req.userId });
         if(!measurement) {
-            return res.status(200).json({ success: false, message: 'user measurement not found' });
+            return res.status(200).json({ success: false, message: 'measurement not found for user' });
         }
 
-        if(req.userId !== measurement.user.toString()) {
-            return res.status(401).json({ success: false, message: 'invalid authentication for requested resource' });
-        }
         res.status(200).json({ success: true, message: 'user measurement', data: measurement });
     } 
     catch (error) {
         res.status(500).json({ success: false, message: 'error finding measurement' });
     }
-
-})
-.patch( verifyToken, async (req, res) => {
-
 })
 
-.put( verifyToken, async (req, res) => {
-    let { userId } = req.params;
-    let { weight, neck, waist, hips, unit } = req.body;
+.patch( async (req, res) => {
+    let { measurementId } = req.params;
 
     try {
-        const exists = await User.exists({ _id: userId });
-        if(!exists) {
-            return res.status(200).json({ success: true, message: 'user does not exist.' });
+        const measurement = await Measurement.findOneAndUpdate({ _id : measurementId, user: req.userId }, 
+                                                                { $set: req.body }, {new: true});
+        if(!measurement) {
+            return res.status(200).json({ success: false, message: 'measurement not found for user' });
         }
-        
-        const measurement = await Measurement.find
+
+        res.status(200).json({ success: true, message: 'user measurement successfully updated', data: measurement });
     } 
     catch (error) {
-        
+        res.status(500).json({ success: false, message: 'error finding measurement' });
     }
 })
 
-.delete( verifyToken, async (req, res) => {
+.delete( async (req, res) => {
+    let { measurementId } = req.params;
 
+    try {
+        const result = await Measurement.deleteOne({ _id: measurementId, user: req.userId });
+        if(!result.deletedCount) {
+            return res.status(200).json({ success: false, message: 'measurement not found for user' });
+        }
+        res.status(200).json({ success: true, message: 'user measurement successfully deleted' });
+    } 
+    catch (error) {
+        res.status(500).json({ success: false, message: 'error finding measurement' });
+    }
 })
 
 module.exports = router;
