@@ -1,6 +1,6 @@
 const router = require('./initRouter');
 
-const { verifyToken, getAuthenticatedUser } = require("../middlewares/auth");
+const { verifyToken, getAuthenticatedUser, isAuthorized} = require("../middlewares/auth");
 
 const { User } = require("../models/user");
 const { Measurement, createMeasurement } = require('../models/measurement');
@@ -10,13 +10,10 @@ const { Measurement, createMeasurement } = require('../models/measurement');
 router.route("/user/:userId/measurements")
 .all(verifyToken)
 .all(getAuthenticatedUser)
+.all(isAuthorized)
 
 .get( async (req, res, next) => {
   let { userId } = req.params;
-  if( userId !== req.userId && req.user.role !== "admin") {
-      return res.status(403).json({ success: false, message: 'invalid authentication for requested resource' });
-  }
-
   try {
       const exists = await User.exists({ _id: userId });
       if(!exists) {
@@ -33,10 +30,6 @@ router.route("/user/:userId/measurements")
 .post( async (req, res, next) => {
   let { userId } = req.params;
   let { weight, neck, waist, hips, unit } = req.body;
-
-  if( userId !== req.userId && req.user.role !== "admin") {
-    return res.status(403).json({ success: false, message: 'invalid authentication for requested resource' });
-  }
 
   try {
       const exists = await User.exists({ _id: userId });

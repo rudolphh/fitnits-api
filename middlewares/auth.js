@@ -53,3 +53,11 @@ exports.verifyAdmin = async (req, res, next) => {
         next(error);
     }
 };
+
+exports.isAuthorized = (req, res, next) => {
+    let { userId } = req.params;
+    if( userId !== req.userId && req.user.role !== "admin") {
+        return res.status(403).json({ success: false, message: 'invalid authentication for requested resource' });
+    }
+    next();
+};
