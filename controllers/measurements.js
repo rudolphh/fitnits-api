@@ -86,7 +86,7 @@ router.route('/:measurementId')
                 { $set: req.body }, {new: true});
 
         if(!measurement) 
-            return res.status(406).json({ success: false, message: 'invalid user or measurement not found' });
+            return res.status(406).json({ success: false, message: 'unauthorized user or measurement not found' });
 
         res.status(200).json({ success: true, message: 'user measurement successfully updated', data: measurement });
     } 
