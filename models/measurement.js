@@ -13,6 +13,12 @@ let measurementSchema = new Schema({
         enum : ['imperial','metric'],
         default: 'imperial'
     },
+    date: {
+        type: Date,
+        required: true,
+        default: Date.now(),
+        validate: [ validator.isDate, "Date is invalid" ]
+    },
     user: {
         type: Schema.Types.ObjectId,
         ref: 'user',

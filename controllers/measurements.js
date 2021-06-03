@@ -14,7 +14,7 @@ router.route("/")
 
 .get( async (req, res, next) => {
   let userId = req.userIdParam;
-  console.log(userId);
+  
   try {
       const exists = await User.exists({ _id: userId });
       if(!exists) {
