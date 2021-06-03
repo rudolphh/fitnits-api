@@ -45,6 +45,11 @@ exports.isAuthorized = (req, res, next) => {
 
 
 exports.verifyAdmin = async (req, res, next) => {
+
+    // ignore this middleware if we're registering a normal user
+    if(!req.body.role || req.body.role === 'normal')
+        return next();
+
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.split(' ')[1];// || localStorage.getItem('authToken');
     if(!token){
@@ -59,6 +64,7 @@ exports.verifyAdmin = async (req, res, next) => {
         next();
     } 
     catch (error) {
+        // console.log(error);
         next(error);
     }
 };

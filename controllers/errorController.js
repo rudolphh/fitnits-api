@@ -24,9 +24,18 @@ const handleDuplicateKeyError = (err, res) => {
 
  //error controller function
  module.exports = (err, req, res, next) => {
+   console.log(err.name);
     try {
         if(err.name === 'ValidationError') return err = handleValidationError(err, res);
         if(err.code && err.code == 11000) return err = handleDuplicateKeyError(err, res);
+        if(err.name === 'TokenExpiredError') 
+          return res.status(401).send({ success: false, message: 'token has expired' });
+
+        if(err.name === 'JsonWebTokenError') 
+          return res.status(401).send({ success: false, message: 'invalid token' });
+        
+        // if all else fails
+        return res.status(400).send({ success: false, message: 'Bad Request' });
     } catch(err) {
         res.status(500).send('An unknown error occurred.');
     }
