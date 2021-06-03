@@ -1,4 +1,4 @@
-const router = require('./initRouter');
+const registration = require('express').Router();
 
 const { verifyAdmin } = require('../middlewares/auth');
 const { User, createUser } = require("../models/user");
@@ -9,7 +9,7 @@ const jwt = require('jsonwebtoken');
 const accessTokenSecret = process.env.SECRET;
 
 
-router.post("/register", verifyAdmin, async (req, res, next) => {
+registration.post("/register", verifyAdmin, async (req, res, next) => {
 
     let { username, email, password, passwordConfirm, role } = req.body;
     let { gender } = req.body;
@@ -27,34 +27,33 @@ router.post("/register", verifyAdmin, async (req, res, next) => {
     } 
     catch (error) {
         next(error);
-    }
+    }  
+});
   
-  });
-  
-  router.post("/login", async(req, res) => {
-      let { username, email, password } = req.body;
-  
-      try {
-          const user = await User.findOne({ $or: [{ username }, { email }]}, { username: 1, email: 1, password: 1 });
-                        
-          if(!user) {
-              return res.status(200).json({ success: true, message: 'invalid username, email, or password'});
-          }
-  
-          const passwordIsValid = bcrypt.compareSync(password, user.password);
-          if(!passwordIsValid) {
-              return res.status(200).json({ success: true, message: 'invalid username, email, or password'});
-          }
-  
-          var token = jwt.sign({ id: user._id }, accessTokenSecret, {
-              expiresIn: 86400 // expires in 24 hours
-          });
-          user.password = undefined;
-          res.status(200).json({ success: true, message: 'login successful', data: user, token }); 
-      } 
-      catch (error) {
-          next(error);
-      }
-  });
+registration.post("/login", async(req, res, next) => {
+    let { username, email, password } = req.body;
 
-  module.exports = router;
+    try {
+        const user = await User.findOne({ $or: [{ username }, { email }]}, { username: 1, email: 1, password: 1 });
+                    
+        if(!user) {
+            return res.status(200).json({ success: true, message: 'invalid username, email, or password'});
+        }
+
+        const passwordIsValid = bcrypt.compareSync(password, user.password);
+        if(!passwordIsValid) {
+            return res.status(200).json({ success: true, message: 'invalid username, email, or password'});
+        }
+
+        var token = jwt.sign({ id: user._id }, accessTokenSecret, {
+            expiresIn: 86400 // expires in 24 hours
+        });
+        user.password = undefined;
+        res.status(200).json({ success: true, message: 'login successful', data: user, token }); 
+    } 
+    catch (error) {
+        next(error);
+    }
+});
+
+module.exports = registration;

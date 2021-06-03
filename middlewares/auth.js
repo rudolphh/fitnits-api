@@ -35,6 +35,15 @@ exports.getAuthenticatedUser = async (req, res, next) => {
     }
 };
 
+exports.isAuthorized = (req, res, next) => {
+    const userId = req.userIdParam;
+    if( userId !== req.userId && req.user.role !== "admin") {
+        return res.status(403).json({ success: false, message: 'not authorized for requested resource' });
+    }
+    next();
+};
+
+
 exports.verifyAdmin = async (req, res, next) => {
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.split(' ')[1];// || localStorage.getItem('authToken');
@@ -52,12 +61,4 @@ exports.verifyAdmin = async (req, res, next) => {
     catch (error) {
         next(error);
     }
-};
-
-exports.isAuthorized = (req, res, next) => {
-    let { userId } = req.params;
-    if( userId !== req.userId && req.user.role !== "admin") {
-        return res.status(403).json({ success: false, message: 'invalid authentication for requested resource' });
-    }
-    next();
 };

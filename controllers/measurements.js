@@ -1,4 +1,4 @@
-const router = require('./initRouter');
+const router = require('express').Router();
 
 const { verifyToken, getAuthenticatedUser, isAuthorized} = require("../middlewares/auth");
 
@@ -7,13 +7,14 @@ const { Measurement, createMeasurement } = require('../models/measurement');
 
 
 // get all user measurements and create single user measurement
-router.route("/user/:userId/measurements")
+router.route("/")
 .all(verifyToken)
 .all(getAuthenticatedUser)
 .all(isAuthorized)
 
 .get( async (req, res, next) => {
-  let { userId } = req.params;
+  let userId = req.userIdParam;
+  console.log(userId);
   try {
       const exists = await User.exists({ _id: userId });
       if(!exists) {
@@ -28,7 +29,7 @@ router.route("/user/:userId/measurements")
 
 })
 .post( async (req, res, next) => {
-  let { userId } = req.params;
+  let userId = req.userIdParam;
   let { weight, neck, waist, hips, unit } = req.body;
 
   try {
@@ -48,22 +49,23 @@ router.route("/user/:userId/measurements")
 
 
 // read, update, delete single user measurement
-router.route('/measurements/:measurementId')
+router.route('/:measurementId')
 .all(verifyToken)
 .all(getAuthenticatedUser)
+.all(isAuthorized)
 
 .get( async (req, res) => {
-    let { measurementId } = req.params;
+    const { measurementId } = req.params;
 
     try {
         const measurement = await Measurement.findOne({ _id : measurementId });
-        if(!measurement) {
+        if(!measurement) 
             return res.status(404).json({ success: false, message: 'measurement not found' });
-        }
 
-        if( measurement.user.toString() !== req.userId && req.user.role !== "admin") {
-            return res.status(403).json({ success: false, message: 'invalid authentication for requested resource' });
-        }
+        if( measurement.user.toString() !== req.userId && req.user.role !== "admin")
+            return res.status(403).json({ 
+                success: false, message: 'not authorized for requested resource' 
+            });
 
         res.status(200).json({ success: true, message: 'user measurement', data: measurement });
     } 
@@ -89,7 +91,6 @@ router.route('/measurements/:measurementId')
         res.status(200).json({ success: true, message: 'user measurement successfully updated', data: measurement });
     } 
     catch (error) {
-        console.log(error);
         res.status(500).json({ success: false, message: 'error finding measurement' });
     }
 })
