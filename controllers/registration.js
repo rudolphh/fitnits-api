@@ -48,8 +48,20 @@ registration.post("/login", async(req, res, next) => {
         var token = jwt.sign({ id: user._id }, accessTokenSecret, {
             expiresIn: 86400 // expires in 24 hours
         });
+
+        let decodedToken = await jwt.verify(token, accessTokenSecret);
+        let expiresIn = new Date(0);
+        expiresIn.setUTCSeconds(decodedToken.exp);
+
         user.password = undefined;
-        res.status(200).json({ success: true, message: 'login successful', data: user, token }); 
+        
+        res.status(200).json({ 
+            success: true, 
+            message: 'login successful', 
+            data: user, 
+            token,
+            expiresIn
+        }); 
     } 
     catch (error) {
         next(error);
