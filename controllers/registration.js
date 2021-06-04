@@ -16,7 +16,10 @@ registration.post("/register", verifyAdmin, async (req, res, next) => {
   
     try {
         if(role === "admin" && !req.isAdmin)
-            return res.status(403).send({ success: false, message: 'Only an admin can register a new admin user' });
+            return res.status(403).send({ 
+                success: false, 
+                message: 'Only an admin can register a new admin user' 
+            });
 
         const userSettings = await createUserSettings(gender);
         const settingsId = userSettings._id.toString();
@@ -34,7 +37,8 @@ registration.post("/login", async(req, res, next) => {
     let { username, email, password } = req.body;
 
     try {
-        const user = await User.findOne({ $or: [{ username }, { email }]}, { username: 1, email: 1, password: 1 });
+        const user = await User.findOne({ $or: [{ username }, { email }]}, 
+            { username: 1, email: 1, password: 1 });
                     
         if(!user) {
             return res.status(200).json({ success: true, message: 'invalid username, email, or password'});

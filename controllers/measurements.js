@@ -30,7 +30,6 @@ router.route("/")
 })
 .post( async (req, res, next) => {
   let userId = req.userIdParam;
-  let { weight, neck, waist, hips, unit } = req.body;
 
   try {
       const exists = await User.exists({ _id: userId });
@@ -38,7 +37,7 @@ router.route("/")
           return res.status(404).json({ success: false, message: 'user does not exist' });
       }
 
-      const measurement = await createMeasurement(weight, neck, waist, hips, unit, userId);
+      const measurement = await createMeasurement(req.body, userId);
       res.status(200).json({ success: true, message: 'measurement successfully saved', data: measurement });
   } 
   catch (error) {

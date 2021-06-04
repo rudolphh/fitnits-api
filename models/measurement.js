@@ -16,7 +16,7 @@ let measurementSchema = new Schema({
     date: {
         type: Date,
         required: true,
-        default: Date.now(),
+        default: Date.now,
         validate: [ validator.isDate, "Date is invalid" ]
     },
     user: {
@@ -29,8 +29,9 @@ let measurementSchema = new Schema({
 
 const Measurement = mongoose.model('measurement', measurementSchema, 'measurements');
 
-const createMeasurement = function(weight, neck, waist, hips=undefined, unit='imperial', user) {
-    const measurement = new Measurement({ weight, neck, waist, hips, unit, user});
+const createMeasurement = function(requestBody, user) {
+    const { weight, neck, waist, hips, unit, date } = requestBody
+    const measurement = new Measurement({ weight, neck, waist, hips, unit, date, user});
     return measurement.save();
 }
 
