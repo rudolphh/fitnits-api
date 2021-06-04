@@ -12,7 +12,6 @@ const accessTokenSecret = process.env.SECRET;
 registration.post("/register", verifyAdmin, async (req, res, next) => {
 
     let { username, email, password, passwordConfirm, role } = req.body;
-    let { gender } = req.body;
   
     try {
         if(role === "admin" && !req.isAdmin)
@@ -21,7 +20,7 @@ registration.post("/register", verifyAdmin, async (req, res, next) => {
                 message: 'Only an admin can register a new admin user' 
             });
 
-        const userSettings = await createUserSettings(gender);
+        const userSettings = await createUserSettings(req.body);
         const settingsId = userSettings._id.toString();
         const user = await createUser(username, email, password, passwordConfirm, role, settingsId);
         user.password = undefined;

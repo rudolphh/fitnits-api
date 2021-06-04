@@ -9,7 +9,7 @@ users.get("/", async (req, res) => {
     try {
         const data = await User.find({})
                       //.populate({ path: 'measurements', select: 'weight neck waist hips unit' })
-                      .populate('settings', 'gender -_id');
+                      .populate('settings', 'gender reminderFrequency -_id');
   
         res.status(200).json({ success: true, message: 'all users', data });
     } 

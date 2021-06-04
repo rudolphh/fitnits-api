@@ -35,6 +35,9 @@ const handleDuplicateKeyError = (err, res) => {
           return res.status(401).send({ success: false, message: 'invalid token' });
         
         // if all else fails
+        if(process.env.NODE_ENV === 'development')
+          console.log(err);
+          
         return res.status(400).send({ success: false, message: 'Bad Request' });
     } catch(err) {
         res.status(500).send('An unknown error occurred.');
