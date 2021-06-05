@@ -15,7 +15,6 @@ let userSettingsSchema = new Schema({
         enum : ['weekly','bi-weekly', 'monthly', 'bi-monthly', 'quarterly' ],
         default: 'weekly'
     }
-
 }, { timestamps: true });
 
 const UserSettings = mongoose.model('userSettings', userSettingsSchema, 'userSettings');

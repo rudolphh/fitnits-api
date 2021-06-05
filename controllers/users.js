@@ -2,6 +2,7 @@ const users = require('express').Router();
 const measurements = require('./measurements');
 
 const { User } = require("../models/user");
+const settings = require('./settings');
 
 
 users.get("/", async (req, res) => {
@@ -23,6 +24,11 @@ users.get("/:userId", async (req, res) => {
 });
 
 // nested (sub) resource
+users.use('/:userId/settings', (req, res, next) => {
+    req.userIdParam = req.params.userId;
+    next();
+}, settings);
+
 users.use('/:userId/measurements', (req, res, next) => {
     req.userIdParam = req.params.userId;
     next();

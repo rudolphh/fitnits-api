@@ -24,8 +24,7 @@ const handleDuplicateKeyError = (err, res) => {
 
  //error controller function
  module.exports = (err, req, res, next) => {
-   console.log(err.name);
-    try {
+  try {
         if(err.name === 'ValidationError') return err = handleValidationError(err, res);
         if(err.code && err.code == 11000) return err = handleDuplicateKeyError(err, res);
         if(err.name === 'TokenExpiredError') 

@@ -1,4 +1,4 @@
-const router = require('express').Router();
+const measurements = require('express').Router();
 
 const { verifyToken, getAuthenticatedUser, isAuthorized} = require("../middlewares/auth");
 
@@ -7,10 +7,8 @@ const { Measurement, createMeasurement } = require('../models/measurement');
 
 
 // get all user measurements and create single user measurement
-router.route("/")
-.all(verifyToken)
-.all(getAuthenticatedUser)
-.all(isAuthorized)
+measurements.route("/")
+.all(verifyToken, getAuthenticatedUser, isAuthorized)
 
 .get( async (req, res, next) => {
   let userId = req.userIdParam;
@@ -48,10 +46,8 @@ router.route("/")
 
 
 // read, update, delete single user measurement
-router.route('/:measurementId')
-.all(verifyToken)
-.all(getAuthenticatedUser)
-.all(isAuthorized)
+measurements.route('/:measurementId')
+.all(verifyToken, getAuthenticatedUser, isAuthorized)
 
 .get( async (req, res) => {
     const { measurementId } = req.params;
@@ -78,11 +74,13 @@ router.route('/:measurementId')
     let { measurementId } = req.params;
 
     try {
+        const updateQuery = { $set: req.body };
+        const queryOptions = { new: true, runValidators: true };
+        
         const measurement = req.user.role === "admin" ? 
-            await Measurement.findOneAndUpdate({ _id : measurementId }, 
-                { $set: req.body }, {new: true})
+            await Measurement.findOneAndUpdate({ _id : measurementId }, updateQuery, queryOptions)
             : await Measurement.findOneAndUpdate({ _id : measurementId, user: req.userId }, 
-                { $set: req.body }, {new: true});
+                                                                        updateQuery, queryOptions);
 
         if(!measurement) 
             return res.status(406).json({ success: false, message: 'unauthorized user or measurement not found' });
@@ -112,4 +110,4 @@ router.route('/:measurementId')
     }
 })
 
-module.exports = router;
+module.exports = measurements;
