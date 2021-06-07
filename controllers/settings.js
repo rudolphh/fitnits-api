@@ -10,7 +10,7 @@ settings.route('/')
 .get( async (req, res, next) => {
     let userIdParam = req.userIdParam;
 
-    try {
+    try { 
         let user = undefined;
         // if the requested user in an admin we need to get the user
         if(userIdParam !== req.userId) {
