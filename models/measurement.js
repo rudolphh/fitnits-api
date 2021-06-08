@@ -4,8 +4,8 @@ const validator = require('validator');
 
 let measurementSchema = new Schema({
     weight: { type: Number, required: true, min: [0, 'Must be positive']},
-    neck: { type: Number, required: true, min: [0, 'Must be positive']},
-    waist: { type: Number, required: true, min: [0, 'Must be positive']},
+    neck: { type: Number, min: [0, 'Must be positive']},
+    waist: { type: Number, min: [0, 'Must be positive']},
     hips: { type: Number, min: [0, 'Must be positive']},
     unit: {
         type: String,
