@@ -35,7 +35,8 @@ let userSettingsSchema = new Schema({
     rate: {
         type: Number,
         required: true,
-        min: [ 0, 'Must be positive' ]
+        min: [ 1, 'Must be positive' ],
+        default: 20
     },
     reminderFrequency: {
         type: String,
@@ -48,8 +49,8 @@ let userSettingsSchema = new Schema({
 const UserSettings = mongoose.model('userSettings', userSettingsSchema, 'userSettings');
 
 const createUserSettings = function(requestBody) {
-    let { gender, reminderFrequency } = requestBody;
-    const settings = new UserSettings({ gender, reminderFrequency });
+    let { gender, birthDate, height, unit, dietType, rate, reminderFrequency } = requestBody;
+    const settings = new UserSettings({ gender, birthDate, height, unit, dietType, rate, reminderFrequency });
     return settings.save();
 }
 

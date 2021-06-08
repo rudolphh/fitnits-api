@@ -1,0 +1,25 @@
+GET http://localhost:3838/users
+
+###
+
+POST http://localhost:3838/register
+Content-Type: application/x-www-form-urlencoded
+
+username=frankie
+&password=bvtca3
+&passwordConfirm=bvtca3
+&gender=male
+&height=65
+&birthDate=01/01/1990
+
+###
+
+POST http://localhost:3838/login HTTP/2.0
+Content-Type: application/x-www-form-urlencoded
+
+username=frankie
+&password=bvtca3
+
+###
+
+
