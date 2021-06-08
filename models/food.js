@@ -12,7 +12,6 @@ let FoodSchema = new Schema({
           "what may only have letters.",
         ],
     },
-    tags: [{ type: String }],
     protein: { type: Number, min: [ 0, 'Must be positive' ]},
     carbohydrate: { type: Number, min: [ 0, 'Must be positive' ]},
     sugars: { type: Number, min: [ 0, 'Must be positive' ]},

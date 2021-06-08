@@ -39,7 +39,6 @@ measurements.route("/")
       res.status(200).json({ success: true, message: 'measurement successfully saved', data: measurement });
   } 
   catch (error) {
-      //res.status(500).json({ success: false, message: 'error checking if user exists' });
       next(error);
   }
 });
