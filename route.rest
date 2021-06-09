@@ -1,3 +1,5 @@
+
+
 GET http://localhost:3838/users
 
 ###
@@ -21,5 +23,6 @@ username=frankie
 &password=bvtca3
 
 ###
-
+GET http://localhost:3838/users/60bfb74403ed733d7a2dec78/settings
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwYmZiNzQ0MDNlZDczM2Q3YTJkZWM3OCIsImlhdCI6MTYyMzE3NzA1MSwiZXhwIjoxNjIzMjYzNDUxfQ.lpAYxUajP35mpu8Y_SfvDHuIN9_91vh4J484q0zqWuY
 

@@ -1,8 +1,15 @@
 // app initialization (db, routers, etc.)
 const express = require('express');
 const app = express();
-
 require('./database/initDB')();// initialize database connection
+
+// swagger documentation
+const swaggerSpec = require('./documentation/swaggerSpec');
+const swaggerJSDoc = require('swagger-jsdoc');
+const swaggerUi = require('swagger-ui-express');
+
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
 
 const routes = require('./controllers')
 app.use('/', routes);
