@@ -14,6 +14,7 @@ const users = require('./users');
 router.use('/users', users);
 router.use(registration);
 
+
 router.get('/', (req, res) => {
     res.status(200).send({ success: true, message: 'hello world' });
 });
