@@ -21,7 +21,7 @@ settings.route('/')
             user = req.user;
         }
         const userSettings = await UserSettings.findOne({ _id: user.settings });
-        res.status(200).send({ success: true, message: 'user settings', userSettings });
+        res.status(200).send({ success: true, message: 'user settings', data: userSettings });
     } 
     catch (error) {
         next(error);
@@ -43,7 +43,7 @@ settings.route('/')
         const userSettings = await UserSettings.findOneAndUpdate({ _id: user.settings }, 
             { $set: req.body }, { new: true, runValidators: true });
 
-        res.status(200).send({ success: true, message: 'user settings', userSettings });
+        res.status(200).send({ success: true, message: 'user settings', data: userSettings });
     } 
     catch (error) {
         next(error);
