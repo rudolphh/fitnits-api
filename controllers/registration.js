@@ -49,7 +49,7 @@ registration.post("/login", async(req, res, next) => {
         }
 
         var token = jwt.sign({ id: user._id }, accessTokenSecret, {
-            expiresIn: 60 // expires in 24 hours
+            expiresIn: 86400 // expires in 24 hours
         });
 
         let decodedToken = await jwt.verify(token, accessTokenSecret);
