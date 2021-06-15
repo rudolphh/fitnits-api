@@ -2,9 +2,9 @@ const foods = require('express').Router();
 const { verifyToken, getAuthenticatedUser, isAuthorized} = require("../middlewares/auth");
 const { Food, createFood } = require('../models/food');
 
+foods.use(verifyToken, getAuthenticatedUser, isAuthorized);
 
 foods.route('/')
-.all(verifyToken, getAuthenticatedUser, isAuthorized)
 
 /**
  * @swagger
@@ -217,6 +217,12 @@ foods.route('/')
  *                         example: 2021-05-29T08:08:40.590Z
 */
 .post( async (req, res, next) => {
+
+})
+
+
+foods.route('/:foodId')
+.get( async (req, res, next) => {
 
 })
 .patch( async (req, res, next) => {
