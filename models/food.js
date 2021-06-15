@@ -8,8 +8,8 @@ let FoodSchema = new Schema({
         type: String,
         lowercase: true,
         validate: [
-          validator.isAlpha,
-          "what may only have letters.",
+          validator.isAlphanumeric,
+          "name may only have letters or number.",
         ],
     },
     protein: { type: Number, min: [ 0, 'Must be positive' ]},

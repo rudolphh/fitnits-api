@@ -1,7 +1,7 @@
 const swaggerJSDoc = require('swagger-jsdoc');
 
 const swaggerDefinition = {
-  openapi: '3.0.0',
+  openapi: '3.0.1',
   info: {
     title: 'Express API for Fitnits',
     version: '1.0.0',
@@ -19,10 +19,20 @@ const swaggerDefinition = {
   },
   servers: [
     {
-      url: 'http://fitapi.rudyah.com',
+      url: 'https://fitapi.rudyah.com',
       description: 'Development server',
     },
   ],
+  basePath: '/',
+  components: {
+    securitySchemes: {
+      bearerAuth: {
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'JWT',
+      }
+    }
+  },
 };
 
 const options = {

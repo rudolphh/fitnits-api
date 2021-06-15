@@ -1,5 +1,6 @@
 const users = require('express').Router();
 const measurements = require('./measurements');
+const foods = require('./foods')
 
 const { User } = require("../models/user");
 const settings = require('./settings');
@@ -85,5 +86,10 @@ users.use('/:userId/measurements', (req, res, next) => {
     req.userIdParam = req.params.userId;
     next();
 }, measurements);
+
+users.use('/:userId/foods', (req, res, next) => {
+    req.userIdParam = req.params.userId;
+    next();
+}, foods);
 
 module.exports = users;
