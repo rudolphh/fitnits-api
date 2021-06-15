@@ -11,6 +11,8 @@ const settings = require('./settings');
  *   get:
  *     summary: Retrieve a list of fitnits users
  *     description: Retrieve a list of users from fitapi. Can be used to populate a list of users when prototyping or testing an API.
+ *     tags: 
+ *       - users
  *     responses:
  *       200:
  *         description: A list of users.

@@ -27,7 +27,7 @@ exports.getAuthenticatedUser = async (req, res, next) => {
 
     try {
         const user = await User.findOne({ _id: req.userId }, { password: 0 });
-        req.user = user ? user : null;
+        req.user = user ?? null;
         next();
     } catch (error) {
         console.log(error);

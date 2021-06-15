@@ -6,6 +6,7 @@ let FoodSchema = new Schema({
     calories: { type: Number, required: true, min: [ 0, 'Must be positive' ]},
     name: {
         type: String,
+        required: true,
         lowercase: true,
         validate: [
           validator.isAlphanumeric,
