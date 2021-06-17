@@ -11,13 +11,13 @@ let userSettingsSchema = new Schema({
     },
     birthDate: {
         type: Date,
-        required: true,
+        //required: true,
         min: [ '1900-01-01', 'Must be positive' ],
         validate: [ validator.isDate, "Date is invalid" ]
     },
     height: {
         type: Number,
-        required: [ true, 'Need height for basic formula'],
+        //required: [ true, 'Need height for basic formula'],
         min: [ 12, 'You are too small to enjoy this ride' ]
     },
     unit: {
