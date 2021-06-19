@@ -37,7 +37,8 @@ registration.post("/login", async(req, res, next) => {
 
     try {
         const user = await User.findOne({ $or: [{ username }, { email }]}, 
-            { username: 1, email: 1, password: 1 });
+            { username: 1, email: 1, password: 1 })
+            .populate('settings', '-_id');
                     
         if(!user) {
             return res.status(200).json({ success: true, message: 'invalid username, email, or password'});
