@@ -10,7 +10,7 @@ const { Measurement, createMeasurement } = require('../models/measurement');
 measurements.route("/")
 .all(verifyToken, getAuthenticatedUser, isAuthorized)
 
-.get( async (req, res, next) => {
+.get( async (req, res, next) => { 
   let userId = req.userIdParam;
   
   try {
