@@ -25,7 +25,7 @@ module.exports = async () => {
       user,
       pass,
       ...options,
-    });
+    }).then(() => { console.log('connected')});
     //console.log("Connection established with MongoDB");
 
   } catch (error) {

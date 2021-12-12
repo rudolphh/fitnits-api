@@ -37,7 +37,7 @@ let FoodSchema = new Schema({
 
 const Food = mongoose.model('food', FoodSchema, 'foods');
 
-const createFood = function(requestBody, user) {
+const addFood = function(requestBody, user) {
     const { calories, name, tags, protein, carbohydrate, sugars, fat, saturated,
             unsaturated, trans, sodium, date } = requestBody
     const food = new Food({ calories, name, tags, protein, carbohydrate, sugars, 
@@ -47,5 +47,5 @@ const createFood = function(requestBody, user) {
 
 module.exports = {
     Food,
-    createFood
+    addFood
 }

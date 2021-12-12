@@ -1,13 +1,7 @@
-const settings = require('express').Router();
-
-const { verifyToken, getAuthenticatedUser, isAuthorized} = require("../middlewares/auth");
-
 const { User } = require("../models/user");
 const { UserSettings } = require('../models/userSettings');
 
-settings.route('/')
-.all(verifyToken, getAuthenticatedUser, isAuthorized)
-.get( async (req, res, next) => {
+const getSettings = async (req, res, next) => {
     let userIdParam = req.userIdParam;
 
     try { 
@@ -26,8 +20,9 @@ settings.route('/')
     catch (error) {
         next(error);
     }
-})
-.patch( async (req, res, next) => {
+}
+
+const updateSettings = async (req, res, next) => {
     let userIdParam = req.userIdParam;
 
     try {
@@ -48,7 +43,6 @@ settings.route('/')
     catch (error) {
         next(error);
     }
-});
+}
 
-
-module.exports = settings;
+module.exports = { getSettings, updateSettings }

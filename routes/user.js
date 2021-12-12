@@ -1,9 +1,10 @@
 const users = require('express').Router();
-const measurements = require('./measurements');
-const foods = require('./foods')
 
-const { User } = require("../models/user");
-const settings = require('./settings');
+const foods = require('./food')
+const measurements = require('./measurement');
+const settings = require('./setting');
+
+const userController = require('../controllers/user-controller');
 
 /**
  * @swagger
@@ -60,38 +61,19 @@ const settings = require('./settings');
  *                         description: The user ID in string form.
  *                         example: 60b7b8284ecd4dd9ef0e447e
 */
-users.get("/", async (req, res) => {
-  
-    try {
-        const data = await User.find({}).select('-updatedAt -__v');
-                      //.populate({ path: 'measurements', select: 'weight neck waist hips unit' })
-                      //.populate('settings', 'gender reminderFrequency -_id');
-  
-        res.status(200).json({ success: true, message: 'all users', data });
-    } 
-    catch (error) {
-      res.status(500).json({ success: false, message: error.message });
-    }
-});
+users.get("/", userController.getAllUsers);
 
 users.get("/:userId", async (req, res) => {
-
+    res.send('muahahaha. stop');
 });
 
-// nested (sub) resource
-users.use('/:userId/settings', (req, res, next) => {
-    req.userIdParam = req.params.userId;
-    next();
-}, settings);
+const userIdParam = require('../middlewares/user-id-param');
 
-users.use('/:userId/measurements', (req, res, next) => {
-    req.userIdParam = req.params.userId;
-    next();
-}, measurements);
-
-users.use('/:userId/foods', (req, res, next) => {
-    req.userIdParam = req.params.userId;
-    next();
-}, foods);
+// nested (sub) resource.  
+// these user routes will defer handling to router given as last argument
+// with the userIdParam middleware providing req.params.userId in req.userIdParam
+users.use('/:userId/foods', userIdParam, foods);
+users.use('/:userId/measurements', userIdParam, measurements);
+users.use('/:userId/settings', userIdParam, settings);
 
 module.exports = users;

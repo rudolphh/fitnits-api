@@ -1,54 +1,57 @@
-const measurements = require('express').Router();
-
-const { verifyToken, getAuthenticatedUser, isAuthorized} = require("../middlewares/auth");
-
 const { User } = require("../models/user");
-const { Measurement, createMeasurement } = require('../models/measurement');
+const { Measurement, addMeasurement } = require("../models/measurement");
 
-
-// get all user measurements and create single user measurement
-measurements.route("/")
-.all(verifyToken, getAuthenticatedUser, isAuthorized)
-
-.get( async (req, res, next) => { 
-  let userId = req.userIdParam;
-  
-  try {
-      const exists = await User.exists({ _id: userId });
-      if(!exists) {
-          return res.status(404).json({ success: false, message: 'user does not exist' });
-      }
-      const measurements = await Measurement.find({ user: userId });
-      res.status(200).json({ success: true, message: 'user measurements', data: measurements });
-  } 
-  catch (error) {
-      res.status(500).json({ success: false, message: 'error checking if user exists' });
-  }
-
-})
-.post( async (req, res, next) => {
+const getAllMeasurements = async (req, res, next) => {
   let userId = req.userIdParam;
 
   try {
-      const exists = await User.exists({ _id: userId });
-      if(!exists) {
-          return res.status(404).json({ success: false, message: 'user does not exist' });
-      }
-
-      const measurement = await createMeasurement(req.body, userId);
-      res.status(200).json({ success: true, message: 'measurement successfully saved', data: measurement });
-  } 
-  catch (error) {
-      next(error);
+    const exists = await User.exists({ _id: userId });
+    if (!exists) {
+      return res
+        .status(404)
+        .json({ success: false, message: "user does not exist" });
+    }
+    const measurements = await Measurement.find({ user: userId });
+    res.status(200).json({
+      success: true,
+      message: "user measurements",
+      data: measurements,
+    });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ success: false, message: "error checking if user exists" });
   }
-});
+};
+
+const createMeasurement = async (req, res, next) => {
+  let userId = req.userIdParam;
+
+  try {
+    const exists = await User.exists({ _id: userId });
+    if (!exists) {
+      return res
+        .status(404)
+        .json({ success: false, message: "user does not exist" });
+    }
+
+    const measurement = await addMeasurement(req.body, userId);
+    res
+      .status(200)
+      .json({
+        success: true,
+        message: "measurement successfully saved",
+        data: measurement,
+      });
+  } catch (error) {
+    next(error);
+  }
+};
 
 
-// read, update, delete single user measurement
-measurements.route('/:measurementId')
-.all(verifyToken, getAuthenticatedUser, isAuthorized)
+// single measurement route handlers
 
-.get( async (req, res) => {
+const getMeasurement = async (req, res) => {
     const { measurementId } = req.params;
 
     try {
@@ -67,9 +70,9 @@ measurements.route('/:measurementId')
         console.log(error);
         res.status(500).json({ success: false, message: 'error finding measurement' });
     }
-})
+};
 
-.patch( async (req, res) => {
+const updateMeasurement = async (req, res) => {
     let { measurementId } = req.params;
 
     try {
@@ -89,9 +92,9 @@ measurements.route('/:measurementId')
     catch (error) {
         res.status(500).json({ success: false, message: 'error finding measurement' });
     }
-})
+};
 
-.delete( async (req, res) => {
+const deleteMeasurement = async (req, res) => {
     let { measurementId } = req.params;
 
     try {
@@ -107,6 +110,13 @@ measurements.route('/:measurementId')
     catch (error) {
         res.status(500).json({ success: false, message: 'error finding measurement' });
     }
-})
+};
 
-module.exports = measurements;
+
+module.exports = { 
+    getAllMeasurements, 
+    createMeasurement, 
+    getMeasurement,
+    updateMeasurement,
+    deleteMeasurement
+};

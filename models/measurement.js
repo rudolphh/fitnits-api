@@ -29,7 +29,7 @@ let measurementSchema = new Schema({
 
 const Measurement = mongoose.model('measurement', measurementSchema, 'measurements');
 
-const createMeasurement = function(requestBody, user) {
+const addMeasurement = function(requestBody, user) {
     const { weight, neck, waist, hips, unit, date } = requestBody
     const measurement = new Measurement({ weight, neck, waist, hips, unit, date, user});
     return measurement.save();
@@ -37,5 +37,5 @@ const createMeasurement = function(requestBody, user) {
 
 module.exports = {
     Measurement,
-    createMeasurement
+    addMeasurement
 }

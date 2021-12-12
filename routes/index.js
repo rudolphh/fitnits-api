@@ -8,8 +8,8 @@ router.use(express.urlencoded({ extended: true }));
 router.use(express.json());
 
 // resource controllers
-const registration = require('./registration');
-const users = require('./users');
+const registration = require('./auth');
+const users = require('./user');
 
 router.use('/users', users);
 router.use(registration);
@@ -21,7 +21,7 @@ router.get('/', (req, res) => {
 
 
 // error handling
-const errorController = require('./errorController');
+const errorController = require('../controllers/error-controller');
 router.use(errorController);
 
 // when all middleware/routes exhausted - 404

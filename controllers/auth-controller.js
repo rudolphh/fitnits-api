@@ -1,6 +1,3 @@
-const registration = require('express').Router();
-
-const { verifyAdmin } = require('../middlewares/auth');
 const { User, createUser } = require("../models/user");
 const { createUserSettings } = require('../models/userSettings');
 
@@ -8,8 +5,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const accessTokenSecret = process.env.SECRET;
 
-
-registration.post("/register", verifyAdmin, async (req, res, next) => {
+const register = async (req, res, next) => {
 
     let { username, email, password, passwordConfirm, role } = req.body;
   
@@ -30,9 +26,9 @@ registration.post("/register", verifyAdmin, async (req, res, next) => {
     catch (error) {
         next(error);
     }  
-});
-  
-registration.post("/login", async(req, res, next) => {
+};
+
+const login = async(req, res, next) => {
     let { username, email, password } = req.body;
 
     try {
@@ -70,6 +66,7 @@ registration.post("/login", async(req, res, next) => {
     catch (error) {
         next(error);
     }
-});
+}
 
-module.exports = registration;
+
+module.exports = { register, login }

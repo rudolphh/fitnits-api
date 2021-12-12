@@ -5,6 +5,7 @@ const { User } = require('../models/user');
 
 const accessTokenSecret = process.env.SECRET;
 
+// verify jwt and attach userId to req
 exports.verifyToken = async (req, res, next) => {
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.split(' ')[1];// || localStorage.getItem('authToken');
@@ -23,8 +24,8 @@ exports.verifyToken = async (req, res, next) => {
     }
 };
 
+// if reached, using req.userId, attach user object to req
 exports.getAuthenticatedUser = async (req, res, next) => {
-
     try {
         const user = await User.findOne({ _id: req.userId }, { password: 0 });
         req.user = user ?? null;

@@ -1,4 +1,4 @@
-
+@authToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxYjU4ZTYwYjMyMDg0MTUwZTNkNWQ1OCIsImlhdCI6MTYzOTI4ODQ1MywiZXhwIjoxNjM5Mzc0ODUzfQ.U_AWr-pbeb9fZdAf__z4a_URMs_icTTiznc5iPjntH4
 
 GET http://localhost:3838/users
 
@@ -23,6 +23,9 @@ username=frankie
 &password=bvtca3
 
 ###
-GET http://localhost:3838/users/60bfb74403ed733d7a2dec78/settings
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwYmZiNzQ0MDNlZDczM2Q3YTJkZWM3OCIsImlhdCI6MTYyMzE3NzA1MSwiZXhwIjoxNjIzMjYzNDUxfQ.lpAYxUajP35mpu8Y_SfvDHuIN9_91vh4J484q0zqWuY
+GET http://localhost:3838/users/61b58e60b32084150e3d5d58/settings
+Authorization: Bearer {{authToken}}
 
+###
+GET http://localhost:3838/users/61b58e60b32084150e3d5d58/measurements
+Authorization: Bearer {{authToken}}
