@@ -7,11 +7,7 @@ let FoodSchema = new Schema({
     name: {
         type: String,
         required: true,
-        lowercase: true,
-        validate: [
-          validator.isAlphanumeric,
-          "name may only have letters or number.",
-        ],
+        lowercase: true
     },
     protein: { type: Number, min: [ 0, 'Must be positive' ]},
     carbohydrate: { type: Number, min: [ 0, 'Must be positive' ]},
@@ -41,7 +37,7 @@ const addFood = function(requestBody, user) {
     const { calories, name, tags, protein, carbohydrate, sugars, fat, saturated,
             unsaturated, trans, sodium, date } = requestBody
     const food = new Food({ calories, name, tags, protein, carbohydrate, sugars, 
-                            fat, saturated, unsaturated, trans, sodium, date });
+                            fat, saturated, unsaturated, trans, sodium, date, user });
     return food.save();
 }
 

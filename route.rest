@@ -26,6 +26,85 @@ username=frankie
 GET http://localhost:3838/users/61b58e60b32084150e3d5d58/settings
 Authorization: Bearer {{authToken}}
 
+
+# measurements
+
 ###
 GET http://localhost:3838/users/61b58e60b32084150e3d5d58/measurements
+Authorization: Bearer {{authToken}}
+
+###
+POST http://localhost:3838/users/61b58e60b32084150e3d5d58/measurements
+content-type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+    "weight": 220,
+    "unit": "imperial"
+}
+
+###
+@measurementId=61b5affa0600492029c5f7e4
+
+GET http://localhost:3838/users/61b58e60b32084150e3d5d58/measurements/{{measurementId}}
+content-type: application/json
+Authorization: Bearer {{authToken}}
+
+###
+PATCH http://localhost:3838/users/61b58e60b32084150e3d5d58/measurements/{{measurementId}}
+content-type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+    "date": "2021-12-11T08:10:16.451Z"
+}
+
+###
+DELETE http://localhost:3838/users/61b58e60b32084150e3d5d58/measurements/{{measurementId}}
+content-type: application/json
+Authorization: Bearer {{authToken}}
+
+
+
+# foods
+
+###
+GET http://localhost:3838/users/61b58e60b32084150e3d5d58/foods
+Authorization: Bearer {{authToken}}
+
+###
+POST http://localhost:3838/users/61b58e60b32084150e3d5d58/foods
+content-type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+    "name": "Pepsi",
+    "calories": 150,
+    "date": "2021-12-12T08:41:44.976Z"
+}
+
+###
+@foodId=61b5b5c8c548c827aecbec4e
+
+GET http://localhost:3838/users/61b58e60b32084150e3d5d58/foods/{{foodId}}
+content-type: application/json
+Authorization: Bearer {{authToken}}
+
+###
+PATCH http://localhost:3838/users/61b58e60b32084150e3d5d58/foods/{{foodId}}
+content-type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+    "date": "2021-12-21T08:41:44.976Z"
+}
+
+###
+DELETE http://localhost:3838/users/61b58e60b32084150e3d5d58/foods/{{foodId}}
+content-type: application/json
+Authorization: Bearer {{authToken}}
+
+
+###
+GET http://localhost:3838/users/61b58e60b32084150e3d5d58/foods?start=2021-12-12&end=2021-12-22
 Authorization: Bearer {{authToken}}

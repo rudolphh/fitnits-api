@@ -1,9 +1,8 @@
 // db initialization
+require("dotenv").config();
 const { connect } = require("mongoose");
-const { config } = require("dotenv");
 
 module.exports = async () => {
-  config(); //invoking the dotenv config here
 
   /// db and models setup
   const dbHost = process.env.DB_HOST,
@@ -26,7 +25,6 @@ module.exports = async () => {
       pass,
       ...options,
     }).then(() => { console.log('connected')});
-    //console.log("Connection established with MongoDB");
 
   } catch (error) {
     console.error(error.message);

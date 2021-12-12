@@ -5,12 +5,6 @@ const getAllMeasurements = async (req, res, next) => {
   let userId = req.userIdParam;
 
   try {
-    const exists = await User.exists({ _id: userId });
-    if (!exists) {
-      return res
-        .status(404)
-        .json({ success: false, message: "user does not exist" });
-    }
     const measurements = await Measurement.find({ user: userId });
     res.status(200).json({
       success: true,
@@ -26,15 +20,8 @@ const getAllMeasurements = async (req, res, next) => {
 
 const createMeasurement = async (req, res, next) => {
   let userId = req.userIdParam;
-
+console.log('hi there')
   try {
-    const exists = await User.exists({ _id: userId });
-    if (!exists) {
-      return res
-        .status(404)
-        .json({ success: false, message: "user does not exist" });
-    }
-
     const measurement = await addMeasurement(req.body, userId);
     res
       .status(200)
@@ -85,7 +72,7 @@ const updateMeasurement = async (req, res) => {
                                                                         updateQuery, queryOptions);
 
         if(!measurement) 
-            return res.status(406).json({ success: false, message: 'unauthorized user or measurement not found' });
+            return res.status(406).json({ success: false, message: 'invalid user or measurement not found' });
 
         res.status(200).json({ success: true, message: 'user measurement successfully updated', data: measurement });
     } 
