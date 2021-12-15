@@ -26,7 +26,7 @@ let userSettingsSchema = new Schema({
         enum : ['imperial','metric'],
         default: 'imperial'
     },
-    dietType: {
+    strategy: {
         type: String,
         required: true,
         enum : [ 'cut','bulk' ],
@@ -49,8 +49,7 @@ let userSettingsSchema = new Schema({
 const UserSettings = mongoose.model('userSettings', userSettingsSchema, 'userSettings');
 
 const createUserSettings = function(requestBody) {
-    let { gender, birthDate, height, unit, dietType, rate, reminderFrequency } = requestBody;
-    const settings = new UserSettings({ gender, birthDate, height, unit, dietType, rate, reminderFrequency });
+    const settings = new UserSettings(requestBody);
     return settings.save();
 }
 

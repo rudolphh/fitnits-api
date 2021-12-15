@@ -28,7 +28,8 @@ exports.verifyToken = async (req, res, next) => {
 exports.getAuthenticatedUser = async (req, res, next) => {
     try {
         const user = await User.findOne({ _id: req.userId }, { password: 0 });
-        req.user = user ?? null;
+        if(!user) { return res.status(403).json({ success: false, message: 'Forbidden'})}
+        req.user = user;
         next();
     } catch (error) {
         console.log(error);

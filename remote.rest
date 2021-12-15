@@ -1,0 +1,112 @@
+@authToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwYjMyYTFlYWExYzU1ODMzZWZmNDE1ZCIsImlhdCI6MTYzOTMwNTAzNywiZXhwIjoxNjM5MzkxNDM3fQ._gyNqphI2TmqdehOuLd-_2USxAZ4QBwpM1WEa2HkWNc
+
+GET https://fitapi.rudyah.com/users
+
+###
+
+POST https://fitapi.rudyah.com/register
+Content-Type: application/x-www-form-urlencoded
+
+username=frankie
+&password=bvtca3
+&passwordConfirm=bvtca3
+&gender=male
+&height=65
+&birthDate=01/01/1990
+
+###
+
+POST https://fitapi.rudyah.com/login HTTP/2.0
+Content-Type: application/x-www-form-urlencoded
+
+username=rudyah
+&password=Imogen123
+
+
+@userId=60b32a1eaa1c55833eff415d
+
+###
+GET https://fitapi.rudyah.com/users/{{userId}}/settings
+Authorization: Bearer {{authToken}}
+
+
+# measurements
+
+###
+GET https://fitapi.rudyah.com/users/{{userId}}/measurements
+Authorization: Bearer {{authToken}}
+
+###
+POST https://fitapi.rudyah.com/users/{{userId}}/measurements
+content-type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+    "weight": 220,
+    "unit": "imperial"
+}
+
+###
+@measurementId=61b5affa0600492029c5f7e4
+
+GET https://fitapi.rudyah.com/users/61b58e60b32084150e3d5d58/measurements/{{measurementId}}
+content-type: application/json
+Authorization: Bearer {{authToken}}
+
+###
+PATCH https://fitapi.rudyah.com/users/61b58e60b32084150e3d5d58/measurements/{{measurementId}}
+content-type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+    "date": "2021-12-11T08:10:16.451Z"
+}
+
+###
+DELETE https://fitapi.rudyah.com/users/61b58e60b32084150e3d5d58/measurements/{{measurementId}}
+content-type: application/json
+Authorization: Bearer {{authToken}}
+
+
+
+# foods
+
+###
+GET https://fitapi.rudyah.com/users/{{userId}}/foods
+Authorization: Bearer {{authToken}}
+
+###
+POST https://fitapi.rudyah.com/users/{{userId}}/foods
+content-type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+    "name": "protein shake",
+    "calories": 200
+}
+
+###
+@foodId=61b5b5c8c548c827aecbec4e
+
+GET https://fitapi.rudyah.com/users/61b58e60b32084150e3d5d58/foods/{{foodId}}
+content-type: application/json
+Authorization: Bearer {{authToken}}
+
+###
+PATCH https://fitapi.rudyah.com/users/61b58e60b32084150e3d5d58/foods/{{foodId}}
+content-type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+    "date": "2021-12-21T08:41:44.976Z"
+}
+
+###
+DELETE https://fitapi.rudyah.com/users/61b58e60b32084150e3d5d58/foods/{{foodId}}
+content-type: application/json
+Authorization: Bearer {{authToken}}
+
+
+###
+GET https://fitapi.rudyah.com/users/61b58e60b32084150e3d5d58/foods?start=2021-12-12&end=2021-12-13
+Authorization: Bearer {{authToken}}

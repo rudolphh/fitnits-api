@@ -1,6 +1,5 @@
-@authToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxYjU4ZTYwYjMyMDg0MTUwZTNkNWQ1OCIsImlhdCI6MTYzOTI4ODQ1MywiZXhwIjoxNjM5Mzc0ODUzfQ.U_AWr-pbeb9fZdAf__z4a_URMs_icTTiznc5iPjntH4
 
-GET http://localhost:3838/users
+GET https://fitapi.rudyah.com/users
 
 ###
 
@@ -22,25 +21,30 @@ Content-Type: application/x-www-form-urlencoded
 username=frankie
 &password=bvtca3
 
+
+@authToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxYjU4ZTYwYjMyMDg0MTUwZTNkNWQ1OCIsImlhdCI6MTYzOTQyMDgyOCwiZXhwIjoxNjM5NTA3MjI4fQ.2wFvMZzyo69-xVfoXPY0d6oZm_vwqC4UYrHyjphsU1k
+@userId=61b58e60b32084150e3d5d58
+
 ###
-GET http://localhost:3838/users/61b58e60b32084150e3d5d58/settings
+GET http://localhost:3838/users/{{userId}}/settings
 Authorization: Bearer {{authToken}}
 
 
 # measurements
 
 ###
-GET http://localhost:3838/users/61b58e60b32084150e3d5d58/measurements
+GET http://localhost:3838/users/{{userId}}/measurements
 Authorization: Bearer {{authToken}}
 
 ###
-POST http://localhost:3838/users/61b58e60b32084150e3d5d58/measurements
+POST http://localhost:3838/users/{{userId}}/measurements
 content-type: application/json
 Authorization: Bearer {{authToken}}
 
 {
-    "weight": 220,
-    "unit": "imperial"
+    "weight": 210,
+    "unit": "imperial",
+    "strategy": "cut"
 }
 
 ###
@@ -78,9 +82,8 @@ content-type: application/json
 Authorization: Bearer {{authToken}}
 
 {
-    "name": "Pepsi",
-    "calories": 150,
-    "date": "2021-12-12T08:41:44.976Z"
+    "name": "protein shake",
+    "calories": 200
 }
 
 ###
@@ -106,5 +109,5 @@ Authorization: Bearer {{authToken}}
 
 
 ###
-GET http://localhost:3838/users/61b58e60b32084150e3d5d58/foods?start=2021-12-12&end=2021-12-22
+GET http://localhost:3838/users/61b58e60b32084150e3d5d58/foods?start=2021-12-12&end=2021-12-13
 Authorization: Bearer {{authToken}}

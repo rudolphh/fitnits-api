@@ -2,28 +2,25 @@ const { Food, addFood } = require("../models/food");
 
 const getAllFoods = async (req, res, next) => {
   let userId = req.userIdParam;
-
   const { start, end } = req.query;
 
   try {
-    let foods;
+    let query;
     start
       ? end
-        ? (foods = await Food.find({ user: userId, date: { $gte: start, $lt: end }}))
-        : (foods = await Food.find({ user: userId, date: { $gte: start } }))
-      : (foods = await Food.find({ user: userId }));
+        ? (query = { user: userId, date: { $gte: start, $lt: end } })
+        : (query = { user: userId, date: { $gte: start } })
+      : (query = { user: userId });
+
+    const foods = await Food.find(query).sort({ date: "desc" });
 
     res.status(200).json({
       success: true,
       message: "user foods",
       data: foods,
     });
-  } 
-  catch (error) {
-    res.status(500).json({
-      success: false,
-      message: "error checking if user exists",
-    });
+  } catch (error) {
+    next(error);
   }
 };
 
@@ -37,8 +34,7 @@ const createFood = async (req, res, next) => {
       message: "food successfully saved",
       data: food,
     });
-  } 
-  catch (error) {
+  } catch (error) {
     next(error);
   }
 };
@@ -60,8 +56,7 @@ const getFoodById = async (req, res, next) => {
       });
 
     res.status(200).json({ success: true, message: "user food", data: food });
-  } 
-  catch (error) {
+  } catch (error) {
     console.log(error);
     res.status(500).json({ success: false, message: "error finding food" });
   }
@@ -98,8 +93,7 @@ const updateFoodById = async (req, res, next) => {
       message: "user food successfully updated",
       data: food,
     });
-  } 
-  catch (error) {
+  } catch (error) {
     res.status(500).json({ success: false, message: "error finding food" });
   }
 };
@@ -123,8 +117,7 @@ const deleteFoodById = async (req, res, next) => {
       success: true,
       message: "user food successfully deleted",
     });
-  } 
-  catch (error) {
+  } catch (error) {
     res.status(500).json({
       success: false,
       message: "error finding food",

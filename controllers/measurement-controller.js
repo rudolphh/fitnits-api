@@ -3,7 +3,7 @@ const { Measurement, addMeasurement } = require("../models/measurement");
 
 const getAllMeasurements = async (req, res, next) => {
   let userId = req.userIdParam;
-
+  
   try {
     const measurements = await Measurement.find({ user: userId });
     res.status(200).json({
@@ -12,15 +12,13 @@ const getAllMeasurements = async (req, res, next) => {
       data: measurements,
     });
   } catch (error) {
-    res
-      .status(500)
-      .json({ success: false, message: "error checking if user exists" });
+    next(error);
   }
 };
 
 const createMeasurement = async (req, res, next) => {
   let userId = req.userIdParam;
-console.log('hi there')
+
   try {
     const measurement = await addMeasurement(req.body, userId);
     res

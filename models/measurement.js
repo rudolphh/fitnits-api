@@ -13,6 +13,11 @@ let measurementSchema = new Schema({
         enum : ['imperial','metric'],
         default: 'imperial'
     },
+    strategy: {
+        type: String,
+        required: true,
+        enum : [ 'cut','bulk' ],
+    },
     date: {
         type: Date,
         required: true,
@@ -30,8 +35,7 @@ let measurementSchema = new Schema({
 const Measurement = mongoose.model('measurement', measurementSchema, 'measurements');
 
 const addMeasurement = function(requestBody, user) {
-    const { weight, neck, waist, hips, unit, date } = requestBody
-    const measurement = new Measurement({ weight, neck, waist, hips, unit, date, user});
+    const measurement = new Measurement({ ...requestBody, user });
     return measurement.save();
 }
 

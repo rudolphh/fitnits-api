@@ -37,12 +37,12 @@ const login = async(req, res, next) => {
             .populate('settings', '-_id');
                     
         if(!user) {
-            return res.status(200).json({ success: true, message: 'invalid username, email, or password'});
+            return res.status(401).json({ success: false, message: 'invalid username, email, or password'});
         }
 
         const passwordIsValid = bcrypt.compareSync(password, user.password);
         if(!passwordIsValid) {
-            return res.status(200).json({ success: true, message: 'invalid username, email, or password'});
+            return res.status(401).json({ success: false, message: 'invalid username, email, or password'});
         }
 
         var token = jwt.sign({ id: user._id }, accessTokenSecret, {
