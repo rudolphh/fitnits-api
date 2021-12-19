@@ -2,12 +2,8 @@ const { Food, addFood } = require("../models/food");
 
 const getAllFoods = async (req, res, next) => {
   let userId = req.userIdParam;
-  const { startStr, endStr } = req.query;
+  const { start, end } = req.query;
 
-  const start = new Date(startStr).toISOString();
-  const end = new Date(endStr).toISOString();
-  console.log(start, end)
-  
   try {
     let query;
     start
