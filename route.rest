@@ -21,8 +21,8 @@ Content-Type: application/x-www-form-urlencoded
 username=frankie
 &password=bvtca3
 
-
-@authToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxYjU4ZTYwYjMyMDg0MTUwZTNkNWQ1OCIsImlhdCI6MTYzOTQyMDgyOCwiZXhwIjoxNjM5NTA3MjI4fQ.2wFvMZzyo69-xVfoXPY0d6oZm_vwqC4UYrHyjphsU1k
+###
+@authToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxYjU4ZTYwYjMyMDg0MTUwZTNkNWQ1OCIsImlhdCI6MTYzOTg4NDM4MywiZXhwIjoxNjM5OTcwNzgzfQ.-K9-p8ZG-oUMk9GIVfCieuhCIuy9dMN8sfbKOkPAaHc
 @userId=61b58e60b32084150e3d5d58
 
 ###
@@ -109,5 +109,5 @@ Authorization: Bearer {{authToken}}
 
 
 ###
-GET http://localhost:3838/users/61b58e60b32084150e3d5d58/foods?start=2021-12-12&end=2021-12-13
+GET http://localhost:3838/users/61b58e60b32084150e3d5d58/foods?start=2021-09-27&end=2021-09-30
 Authorization: Bearer {{authToken}}
