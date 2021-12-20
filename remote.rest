@@ -23,7 +23,7 @@ username=rudyah
 
 ###
 @userId=60b32a1eaa1c55833eff415d
-@authToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwYjMyYTFlYWExYzU1ODMzZWZmNDE1ZCIsImlhdCI6MTYzOTg3NjEwNiwiZXhwIjoxNjM5OTYyNTA2fQ.55WlXV7sQrEiQpLJcOVRYgFIihfj8jYAmBVbY31xUxM
+@authToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwYjMyYTFlYWExYzU1ODMzZWZmNDE1ZCIsImlhdCI6MTYzOTk5MjUwMiwiZXhwIjoxNjQwMDc4OTAyfQ.h-D1Bad-eR6OK90wTst56GfeBpvmrmuUW9Pp12KJxo0
 
 
 ###
@@ -120,5 +120,5 @@ Authorization: Bearer {{authToken}}
 
 
 ###
-GET https://fitapi.rudyah.com/users/{{userId}}/foods?start=2021-12-19&end=2021-12-20
+GET https://fitapi.rudyah.com/users/{{userId}}/foods?name=cereal
 Authorization: Bearer {{authToken}}
