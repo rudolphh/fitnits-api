@@ -120,5 +120,5 @@ Authorization: Bearer {{authToken}}
 
 
 ###
-GET https://fitapi.rudyah.com/users/{{userId}}/foods?name=cereal
+GET https://fitapi.rudyah.com/users/{{userId}}/foods?name=c
 Authorization: Bearer {{authToken}}
