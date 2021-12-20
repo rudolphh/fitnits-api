@@ -82,8 +82,8 @@ content-type: application/json
 Authorization: Bearer {{authToken}}
 
 {
-    "name": "protein shake",
-    "calories": 200
+    "name": "big mac",
+    "calories": 500
 }
 
 ###
@@ -98,23 +98,23 @@ Authorization: Bearer {{authToken}}
 
 
 ###
-@foodId=61b5b5c8c548c827aecbec4e
+@foodId=61bf88d26e2dc3f467e1d04e
 
 GET https://fitapi.rudyah.com/users/{{userId}}/foods/{{foodId}}
 content-type: application/json
 Authorization: Bearer {{authToken}}
 
 ###
-PATCH https://fitapi.rudyah.com/users/61b58e60b32084150e3d5d58/foods/{{foodId}}
+PATCH https://fitapi.rudyah.com/users/{{userId}}/foods/{{foodId}}
 content-type: application/json
 Authorization: Bearer {{authToken}}
 
 {
-    "date": "2021-12-21T08:41:44.976Z"
+    "date": "2021-12-20T08:41:44.976Z"
 }
 
 ###
-DELETE https://fitapi.rudyah.com/users/61b58e60b32084150e3d5d58/foods/{{foodId}}
+DELETE https://fitapi.rudyah.com/users/{{userId}}/foods/{{foodId}}
 content-type: application/json
 Authorization: Bearer {{authToken}}
 
