@@ -109,5 +109,5 @@ Authorization: Bearer {{authToken}}
 
 
 ###
-GET http://localhost:3838/users/61b58e60b32084150e3d5d58/foods?name=c
+GET http://localhost:3838/users/61b58e60b32084150e3d5d58/foods?name=ree
 Authorization: Bearer {{authToken}}
