@@ -7,7 +7,7 @@ const getAllFoods = async (req, res, next) => {
   try {
     let query;
 
-    name ? query = { name: { $regex: `^${name}`, $options: 'i' } } :
+    name ? query = { name: { $regex: `^${encodeURI(name)}`, $options: 'i' } } :
     start
       ? end
         ? (query = { user: userId, date: { $gte: start, $lt: end } })
