@@ -218,7 +218,9 @@ foods
    *                         description: The date ingested
    *                         example: 2021-05-29T08:08:40.590Z
    */
-  .post(foodController.createFood);
+  .post(foodController.createFood)
+
+  .delete(foodController.deleteManyFoods);
 
 foods
   .route("/:foodId")

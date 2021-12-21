@@ -22,7 +22,7 @@ username=frankie
 &password=bvtca3
 
 ###
-@authToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxYjU4ZTYwYjMyMDg0MTUwZTNkNWQ1OCIsImlhdCI6MTYzOTk5ODA0NiwiZXhwIjoxNjQwMDg0NDQ2fQ.EXEM5cak9mYMDIe2MDX3eoyiqwdon_f4HGd_WtheLIA
+@authToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxYjU4ZTYwYjMyMDg0MTUwZTNkNWQ1OCIsImlhdCI6MTY0MDEwMDk5NSwiZXhwIjoxNjQwMTg3Mzk1fQ.gBELeRhMx1TQnf2HkFOmvXq5ZeZVBqSuFVyeXW45bQM
 @userId=61b58e60b32084150e3d5d58
 
 ###
@@ -84,6 +84,15 @@ Authorization: Bearer {{authToken}}
 {
     "name": "candy",
     "calories": 80
+}
+
+###
+DELETE http://localhost:3838/users/61b58e60b32084150e3d5d58/foods
+content-type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+    "foods": ["61bf037403e88c187fe34cf6", "61b5c80995380d31413b2b95"]
 }
 
 ###

@@ -1,5 +1,7 @@
 const { Food, addFood } = require("../models/food");
 
+// /foods
+
 const getAllFoods = async (req, res, next) => {
   let userId = req.userIdParam;
   const { start, end, name } = req.query;
@@ -40,6 +42,35 @@ const createFood = async (req, res, next) => {
     next(error);
   }
 };
+
+const deleteManyFoods = async (req, res, next) => {
+  let { foods } = req.body;
+
+  try {
+    const result =
+      req.user.role === "admin"
+        ? await Food.deleteMany({ _id: { $in: foods } })
+        : await Food.deleteMany({ _id: { $in: foods }, user: req.userId });
+
+    if (!result.deletedCount) {
+      return res.status(406).json({
+        success: false,
+        message: "invalid user or food not found",
+      });
+    }
+    res.status(200).json({
+      success: true,
+      message: `${result.deletedCount} user food(s) deleted successfully`,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "error finding food",
+    });
+  }
+}
+
+// foods/{foodId}
 
 const getFoodById = async (req, res, next) => {
   const { foodId } = req.params;
@@ -130,6 +161,7 @@ const deleteFoodById = async (req, res, next) => {
 module.exports = {
   getAllFoods,
   createFood,
+  deleteManyFoods,
   getFoodById,
   updateFoodById,
   deleteFoodById,
