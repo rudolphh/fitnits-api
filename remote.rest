@@ -23,7 +23,7 @@ username=rudyah
 
 ###
 @userId=60b32a1eaa1c55833eff415d
-@authToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwYjMyYTFlYWExYzU1ODMzZWZmNDE1ZCIsImlhdCI6MTYzOTk5MjUwMiwiZXhwIjoxNjQwMDc4OTAyfQ.h-D1Bad-eR6OK90wTst56GfeBpvmrmuUW9Pp12KJxo0
+@authToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwYjMyYTFlYWExYzU1ODMzZWZmNDE1ZCIsImlhdCI6MTY0Mjg0MDMxNCwiZXhwIjoxNjQyOTI2NzE0fQ.tMqkLyTh5VIZXTNaQxHwCurmnxi-IA8MenhLo27HZV4
 
 
 ###
@@ -98,7 +98,7 @@ Authorization: Bearer {{authToken}}
 
 
 ###
-@foodId=61bf88d26e2dc3f467e1d04e
+@foodId=61c6260da69dd547843d57d7
 
 GET https://fitapi.rudyah.com/users/{{userId}}/foods/{{foodId}}
 content-type: application/json
@@ -110,7 +110,7 @@ content-type: application/json
 Authorization: Bearer {{authToken}}
 
 {
-    "date": "2021-12-20T08:41:44.976Z"
+    "date": "2021-12-24T19:57:01.444Z"
 }
 
 ###
