@@ -18,7 +18,8 @@ let userSettingsSchema = new Schema({
     height: {
         type: Number,
         //required: [ true, 'Need height for basic formula'],
-        min: [ 12, 'You are too small to enjoy this ride' ]
+        min: [ 24, 'You are too small to enjoy this ride' ],
+        default: 72
     },
     unit: {
         type: String,
@@ -38,10 +39,17 @@ let userSettingsSchema = new Schema({
         min: [ 1, 'Must be positive' ],
         default: 20
     },
+    reminderVal: {
+        type: Number,
+        required: true,
+        min: [1, 'Must be positive'],
+        max: [3, 'Number values only 1 to 3'],
+        default: 2
+    },
     reminderFrequency: {
         type: String,
         required: true,
-        enum : ['weekly','bi-weekly', 'monthly', 'bi-monthly', 'quarterly' ],
+        enum : ['weekly', 'monthly'],
         default: 'weekly'
     },
 }, { timestamps: true });

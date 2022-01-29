@@ -30,6 +30,14 @@ username=rudyah
 GET https://fitapi.rudyah.com/users/{{userId}}/settings
 Authorization: Bearer {{authToken}}
 
+###
+PATCH https://fitapi.rudyah.com/users/{{userId}}/settings
+content-type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+    "birthDate": "1982-09-27T08:00:00.000Z"
+}
 
 # measurements
 
