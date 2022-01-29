@@ -39,7 +39,7 @@ let userSettingsSchema = new Schema({
         min: [ 1, 'Must be positive' ],
         default: 20
     },
-    reminderVal: {
+    reminderValue: {
         type: Number,
         required: true,
         min: [1, 'Must be positive'],
