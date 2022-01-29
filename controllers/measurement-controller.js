@@ -5,7 +5,7 @@ const getAllMeasurements = async (req, res, next) => {
   let userId = req.userIdParam;
   
   try {
-    const measurements = await Measurement.find({ user: userId });
+    const measurements = await Measurement.find({ user: userId }).sort({ date: "desc" });
     res.status(200).json({
       success: true,
       message: "user measurements",

@@ -23,7 +23,7 @@ username=rudyah
 
 ###
 @userId=60b32a1eaa1c55833eff415d
-@authToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwYjMyYTFlYWExYzU1ODMzZWZmNDE1ZCIsImlhdCI6MTY0Mjg0MDMxNCwiZXhwIjoxNjQyOTI2NzE0fQ.tMqkLyTh5VIZXTNaQxHwCurmnxi-IA8MenhLo27HZV4
+@authToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwYjMyYTFlYWExYzU1ODMzZWZmNDE1ZCIsImlhdCI6MTY0MzQ3NzUzMiwiZXhwIjoxNjQzNTYzOTMyfQ.tLsSlJjVT5N8nw2MSOsO35A2cI-84KAG5tuK_nIg2AM
 
 
 ###
@@ -50,7 +50,7 @@ Authorization: Bearer {{authToken}}
 ###
 @measurementId=61b5affa0600492029c5f7e4
 
-GET https://fitapi.rudyah.com/users/61b58e60b32084150e3d5d58/measurements/{{measurementId}}
+GET https://fitapi.rudyah.com/users/{userId}/measurements/{{measurementId}}
 content-type: application/json
 Authorization: Bearer {{authToken}}
 
