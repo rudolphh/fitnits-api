@@ -18,6 +18,12 @@ let FoodSchema = new Schema(
     unsaturated: { type: Number, min: [0, "Must be positive"] },
     trans: { type: Number, min: [0, "Must be positive"] },
     sodium: { type: Number, min: [0, "Must be positive"] },
+    mealTime: {
+      type: String,
+      required: true,
+      enum : ['breakfast','lunch', 'dinner'],
+      default: 'breakfast'
+    },
     date: {
       type: Date,
       required: true,
