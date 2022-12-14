@@ -23,7 +23,7 @@ username=rudyah
 
 ###
 @userId=60b32a1eaa1c55833eff415d
-@authToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwYjMyYTFlYWExYzU1ODMzZWZmNDE1ZCIsImlhdCI6MTY0MzQ3NzUzMiwiZXhwIjoxNjQzNTYzOTMyfQ.tLsSlJjVT5N8nw2MSOsO35A2cI-84KAG5tuK_nIg2AM
+@authToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwYjMyYTFlYWExYzU1ODMzZWZmNDE1ZCIsImlhdCI6MTY0NTgyMzM1OSwiZXhwIjoxNjQ1OTA5NzU5fQ.FkyvrQZhSxteuNwMsnxjVNAvQWwWqvAeTineW0pacRw
 
 
 ###
@@ -36,7 +36,7 @@ content-type: application/json
 Authorization: Bearer {{authToken}}
 
 {
-    "birthDate": "1982-09-27T08:00:00.000Z"
+    "reminderValue": 3
 }
 
 # measurements

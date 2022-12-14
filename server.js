@@ -1,4 +1,4 @@
-// app initialization (db, routers, etc.) - hi 
+// app initialization (db, routers, etc.) - hi bye
 const express = require('express');
 const app = express();
 require('./database/initDB')();// initialize database connection
